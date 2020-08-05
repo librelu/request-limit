@@ -22,7 +22,7 @@ var _ = Describe("handlers", func() {
 		mockRedis      *redismock.MockHandler
 		ctrl           *gomock.Controller
 		requestLimit   int64
-		trackerHandler trackers.TrackersHandler
+		trackerHandler trackers.Handler
 	)
 	BeforeEach(func() {
 		requestLimit = 10
@@ -43,7 +43,7 @@ var _ = Describe("handlers", func() {
 			redisHandler    redis.Handler
 			expiredDuration time.Duration
 			requestLimit    int64
-			trackerHandler  trackers.TrackersHandler
+			trackerHandler  trackers.Handler
 			err             error
 		)
 		BeforeEach(func() {

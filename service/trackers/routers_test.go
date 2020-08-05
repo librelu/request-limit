@@ -22,7 +22,7 @@ var _ = Describe("routes", func() {
 		mockRedis      *redismock.MockHandler
 		ctrl           *gomock.Controller
 		requestLimit   int64
-		trackerHandler trackers.TrackersHandler
+		trackerHandler trackers.Handler
 	)
 	BeforeEach(func() {
 		requestLimit = 10

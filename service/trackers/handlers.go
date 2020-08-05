@@ -2,7 +2,6 @@ package trackers
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 	"time"
 
@@ -11,7 +10,7 @@ import (
 	"github.com/request-limit/utils/utilerrors"
 )
 
-func NewTrackers(redis redis.Handler, expiredDuration time.Duration, defaultLimit int64) (TrackersHandler, error) {
+func NewTrackers(redis redis.Handler, expiredDuration time.Duration, defaultLimit int64) (Handler, error) {
 	if err := validateTrackersInput(redis, expiredDuration, defaultLimit); err != nil {
 		return nil, utilerrors.Wrap(err, "can't pass the validation in NewTrackers")
 	}
@@ -43,9 +42,8 @@ func (t *Trackers) Track(c *gin.Context) {
 	key := getCacheKey(c.ClientIP())
 	data, err := t.Redis.Get(c, key)
 	if err != nil {
-		msg := fmt.Sprintf("data from redis error:%v", key)
-		log.Println(utilerrors.Wrap(err, msg))
-		c.JSON(http.StatusInternalServerError, msg)
+		err := utilerrors.Wrap(err, fmt.Sprintf("data from redis error:%v", key))
+		c.AbortWithError(http.StatusInternalServerError, err)
 	}
 	c.JSON(http.StatusOK, gin.H{
 		"tries": data,

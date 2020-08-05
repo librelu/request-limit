@@ -17,7 +17,7 @@ type Trackers struct {
 	DefaultLimit    int64
 }
 
-type TrackersHandler interface {
+type Handler interface {
 	RateLimitMiddleware(c *gin.Context)
 	Track(c *gin.Context)
 }
