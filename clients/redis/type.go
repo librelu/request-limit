@@ -7,6 +7,7 @@ import (
 	"github.com/go-redis/redis/v8"
 )
 
+//go:generate mockgen -source=./type.go -destination=mocks/mocks.go
 type Handler interface {
 	Get(ctx context.Context, key string) (string, error)
 	INCRAndExpire(ctx context.Context, key string, expiration time.Duration) (int64, error)
