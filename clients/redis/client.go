@@ -9,7 +9,7 @@ import (
 	"github.com/request-limit/utils/utilerrors"
 )
 
-func NewClient(address, password string, db, maxRetries int, readTimeout, writeTimeout, dialTimeout time.Duration) (*redis.Client, error) {
+func NewClient(address, password string, db, maxRetries int, readTimeout, writeTimeout, dialTimeout time.Duration) (Handler, error) {
 	if err := validateInput(address, db, maxRetries, readTimeout, writeTimeout, dialTimeout); err != nil {
 		return nil, utilerrors.Wrap(err, "error when validateInput in NewClient")
 	}
@@ -24,7 +24,9 @@ func NewClient(address, password string, db, maxRetries int, readTimeout, writeT
 	if err := rdb.Ping(context.Background()).Err(); err != nil {
 		return nil, utilerrors.Wrap(err, "error when healthcheck redis in NewClient")
 	}
-	return rdb, nil
+	return &redisClient{
+		client: rdb,
+	}, nil
 }
 
 func validateInput(address string, db, maxRetries int, readTimeout, writeTimeout, dialTimeout time.Duration) error {

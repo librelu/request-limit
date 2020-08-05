@@ -1,28 +1,38 @@
 package redis_test
 
 import (
-	"context"
 	"time"
 
-	"github.com/go-redis/redis/v8"
+	"github.com/alicebob/miniredis"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	redisclient "github.com/request-limit/clients/redis"
 )
 
 var _ = Describe("redis", func() {
+	var (
+		mr *miniredis.Miniredis
+	)
+	BeforeEach(func() {
+		var e error
+		mr, e = miniredis.Run()
+		if e != nil {
+			panic(e)
+		}
+	})
+	AfterEach(func() {
+		mr.Close()
+	})
 	Describe("NewClient", func() {
 		var (
 			address, password                      string
 			db, maxRetries                         int
 			readTimeout, writeTimeout, dialTimeout time.Duration
-			redisClient                            *redis.Client
+			redisHandler                           redisclient.Handler
 			err                                    error
-			ctx                                    context.Context
 		)
 		BeforeEach(func() {
-			ctx = context.Background()
-			address = "127.0.0.1:6379"
+			address = mr.Addr()
 			password = ""
 			db = 0
 			maxRetries = 0
@@ -31,19 +41,12 @@ var _ = Describe("redis", func() {
 			dialTimeout = 3000
 		})
 		JustBeforeEach(func() {
-			client := redis.NewClient(&redis.Options{
-				Addr: address,
-			})
-			if e := client.Ping(ctx).Err(); e != nil {
-				panic(e)
-			}
-
-			redisClient, err = redisclient.NewClient(address, password, db, maxRetries, readTimeout, writeTimeout, dialTimeout)
+			redisHandler, err = redisclient.NewClient(address, password, db, maxRetries, readTimeout, writeTimeout, dialTimeout)
 		})
 		When("given correct input", func() {
 			It("should pass the flow without error", func() {
 				Expect(err).Should(BeNil())
-				Expect(redisClient).ShouldNot(BeNil())
+				Expect(redisHandler).ShouldNot(BeNil())
 			})
 		})
 		When("given blank address", func() {
@@ -52,7 +55,7 @@ var _ = Describe("redis", func() {
 			})
 			It("should returns error", func() {
 				Expect(err).ShouldNot(BeNil())
-				Expect(redisClient).Should(BeNil())
+				Expect(redisHandler).Should(BeNil())
 			})
 		})
 		When("given negative db", func() {
@@ -61,7 +64,7 @@ var _ = Describe("redis", func() {
 			})
 			It("should returns error", func() {
 				Expect(err).ShouldNot(BeNil())
-				Expect(redisClient).Should(BeNil())
+				Expect(redisHandler).Should(BeNil())
 			})
 		})
 		When("given negative maxRetries", func() {
@@ -70,7 +73,7 @@ var _ = Describe("redis", func() {
 			})
 			It("should returns error", func() {
 				Expect(err).ShouldNot(BeNil())
-				Expect(redisClient).Should(BeNil())
+				Expect(redisHandler).Should(BeNil())
 			})
 		})
 		When("given negative readTimeout", func() {
@@ -79,7 +82,7 @@ var _ = Describe("redis", func() {
 			})
 			It("should returns error", func() {
 				Expect(err).ShouldNot(BeNil())
-				Expect(redisClient).Should(BeNil())
+				Expect(redisHandler).Should(BeNil())
 			})
 		})
 		When("given negative writeTimeout", func() {
@@ -88,7 +91,7 @@ var _ = Describe("redis", func() {
 			})
 			It("should returns error", func() {
 				Expect(err).ShouldNot(BeNil())
-				Expect(redisClient).Should(BeNil())
+				Expect(redisHandler).Should(BeNil())
 			})
 		})
 		When("given negative dialTimeout", func() {
@@ -97,7 +100,7 @@ var _ = Describe("redis", func() {
 			})
 			It("should returns error", func() {
 				Expect(err).ShouldNot(BeNil())
-				Expect(redisClient).Should(BeNil())
+				Expect(redisHandler).Should(BeNil())
 			})
 		})
 	})
