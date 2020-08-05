@@ -66,18 +66,19 @@ var _ = Describe("redis", func() {
 			durationTime time.Duration
 			key          string
 			err          error
+			result       int64
 		)
 		BeforeEach(func() {
 			durationTime = 1
 			key = "hello"
 		})
 		JustBeforeEach(func() {
-			err = redisHandler.INCRAndExpire(context.Background(), key, time.Second*durationTime)
+			result, err = redisHandler.INCRAndExpire(context.Background(), key, time.Second*durationTime)
 		})
 		When("given key with expired time", func() {
 			It("should returns correct value", func() {
 				Expect(err).Should(BeNil())
-				Expect(mr.Get(key)).Should(Equal("1"))
+				Expect(result).Should(Equal(int64(1)))
 			})
 			It("should expired after sleep", func() {
 				mr.FastForward(time.Second * 1)
@@ -89,19 +90,21 @@ var _ = Describe("redis", func() {
 	})
 	Describe("INCR", func() {
 		var (
-			key string
-			err error
+			key    string
+			err    error
+			result int64
 		)
 		BeforeEach(func() {
 			key = "hello"
+			mr.Set(key, "1")
 		})
 		JustBeforeEach(func() {
-			err = redisHandler.INCR(context.Background(), key)
+			result, err = redisHandler.INCR(context.Background(), key)
 		})
 		When("given key existed", func() {
 			It("should returns increpted value", func() {
 				Expect(err).Should(BeNil())
-				Expect(mr.Get(key)).Should(Equal("1"))
+				Expect(result).Should(Equal(int64(2)))
 			})
 		})
 	})

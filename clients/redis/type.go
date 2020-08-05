@@ -9,8 +9,8 @@ import (
 
 type Handler interface {
 	Get(ctx context.Context, key string) (string, error)
-	INCRAndExpire(ctx context.Context, key string, expiration time.Duration) error
-	INCR(ctx context.Context, key string) error
+	INCRAndExpire(ctx context.Context, key string, expiration time.Duration) (int64, error)
+	INCR(ctx context.Context, key string) (int64, error)
 }
 
 type redisClient struct {
