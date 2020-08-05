@@ -56,7 +56,7 @@ var _ = Describe("redis", func() {
 				key = "not found key"
 			})
 			It("should returns NotFoundError", func() {
-				Expect(err).Should(Equal(redis.NotFoundError))
+				Expect(err).Should(Equal(redisclient.NotFoundError))
 				Expect(getResult).Should(Equal(""))
 			})
 		})

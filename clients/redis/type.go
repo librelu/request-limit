@@ -16,3 +16,5 @@ type Handler interface {
 type redisClient struct {
 	client *redis.Client
 }
+
+const NotFoundError = redis.Nil
