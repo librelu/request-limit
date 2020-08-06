@@ -11,7 +11,7 @@ The default address is `127.0.0.1:8080`.
 
 # How to setup
 
-This server using `make` command to testing and deploy the APP. The make commands contains:
+This server using `make` command to operate the server. The make commands contains:
 
 | Command name | Description |
 |-------------|-------------|
