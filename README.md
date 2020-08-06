@@ -25,4 +25,4 @@ The server had deploied to heroku. The hostname is `https://request-limit.heroku
 | URL | Method |Description |
 |-------------|------------|-------------|
 | https://request-limit.herokuapp.com/api/v1/track | GET | track user request times by Client IP|
-| https://request-limit.herokuapp.com/api/v1/track | GET | check service health status|
+| https://request-limit.herokuapp.com/healthcheck | GET | check service health status|
