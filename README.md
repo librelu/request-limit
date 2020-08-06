@@ -1,6 +1,6 @@
 # REQIEST-LIMIT
 
-This is a micro server to contains the `rate-limit` feature. For more details about rate limit can be found in [Redis Doc INCR cmd details](https://redis.io/commands/incr)
+This is a micro server to contains the `rate limit` feature. For more details about `rate limit` can be found in [Redis Doc INCR cmd details](https://redis.io/commands/incr)
 
 | URL | Method | Description |
 |-----|--------|-------------|
@@ -9,9 +9,9 @@ This is a micro server to contains the `rate-limit` feature. For more details ab
 
 The default ip and prot is `127.0.0.1:8000`.
 
-# How to use it
+# How to setup
 
-This server using `make` command to control the APP. The make commands contains:
+This server using `make` command to testing and deploy the APP. The make commands contains:
 
 | Command name | Description |
 |-------------|-------------|
