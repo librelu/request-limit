@@ -15,6 +15,7 @@ var _ = Describe("redis", func() {
 	var (
 		mr           *miniredis.Miniredis
 		redisHandler redis.Handler
+		username     string
 	)
 	BeforeEach(func() {
 		var e error
@@ -23,7 +24,7 @@ var _ = Describe("redis", func() {
 			panic(e)
 		}
 		redisHandler, e = redisclient.NewClient(
-			mr.Addr(), "", 0, 0, 3000, 3000, 3000)
+			username, mr.Addr(), "", 0, 0, 3000, 3000, 3000)
 		if e != nil {
 			panic(e)
 		}

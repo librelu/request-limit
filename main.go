@@ -6,6 +6,7 @@ import (
 	"github.com/request-limit/service/healthchecks"
 	"github.com/request-limit/service/trackers"
 	"github.com/request-limit/utils/utilerrors"
+	"github.com/spf13/viper"
 )
 
 type handlers struct {
@@ -28,10 +29,6 @@ func main() {
 	engine.Run("0.0.0.0:8000")
 }
 
-func initClients() *clients {
-	return nil
-}
-
 func initEndpoints(engine *gin.Engine, h *handlers) {
 	baseAPI := engine.Group("")
 	groupAPI := engine.Group("/api")
@@ -43,7 +40,10 @@ func initEndpoints(engine *gin.Engine, h *handlers) {
 
 func initHandlers() (*handlers, error) {
 	redisClient, err := redis.NewClient(
-		"redis:6379", "", 0, 0, 3000, 3000, 3000,
+		viper.GetString("REDIS_USERNAME"),
+		viper.GetString("REDIS_ADDRESS"),
+		viper.GetString("REDIS_PASSWORLD"),
+		0, 0, 3000, 3000, 3000,
 	)
 	if err != nil {
 		return nil, utilerrors.Wrap(err, "can't new redis client in initHandlers")

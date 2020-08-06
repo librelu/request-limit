@@ -25,7 +25,7 @@ var _ = Describe("redis", func() {
 	})
 	Describe("NewClient", func() {
 		var (
-			address, password                      string
+			address, password, username            string
 			db, maxRetries                         int
 			readTimeout, writeTimeout, dialTimeout time.Duration
 			redisHandler                           redisclient.Handler
@@ -41,7 +41,7 @@ var _ = Describe("redis", func() {
 			dialTimeout = 3000
 		})
 		JustBeforeEach(func() {
-			redisHandler, err = redisclient.NewClient(address, password, db, maxRetries, readTimeout, writeTimeout, dialTimeout)
+			redisHandler, err = redisclient.NewClient(username, address, password, db, maxRetries, readTimeout, writeTimeout, dialTimeout)
 		})
 		When("given correct input", func() {
 			It("should pass the flow without error", func() {

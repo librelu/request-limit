@@ -9,13 +9,15 @@ import (
 	"github.com/request-limit/utils/utilerrors"
 )
 
-func NewClient(address, password string, db, maxRetries int, readTimeout, writeTimeout, dialTimeout time.Duration) (Handler, error) {
+func NewClient(username, address, password string, db, maxRetries int, readTimeout, writeTimeout, dialTimeout time.Duration) (Handler, error) {
 	if err := validateInput(address, db, maxRetries, readTimeout, writeTimeout, dialTimeout); err != nil {
 		return nil, utilerrors.Wrap(err, "error when validateInput in NewClient")
 	}
 	rdb := redis.NewClient(&redis.Options{
 		Addr:         address,
 		DB:           db,
+		Username:     username,
+		Password:     password,
 		MaxRetries:   maxRetries,
 		ReadTimeout:  readTimeout * time.Millisecond,
 		WriteTimeout: writeTimeout * time.Millisecond,
