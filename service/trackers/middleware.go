@@ -10,26 +10,26 @@ import (
 
 // RateLimitMiddleware Block user when tries so many times in a period
 func (t *Trackers) RateLimitMiddleware(c *gin.Context) {
-	var (
-		count int64
-		err   error
-	)
-	if err := validateRateLimitMiddleware(c); err != nil {
+	if err := validateRateLimitMiddlewareRequest(c); err != nil {
 		c.AbortWithError(http.StatusForbidden, utilerrors.Wrap(err, "[RateLimitMiddleware] can't pass the validation"))
 		return
 	}
 
+	var (
+		count int64
+		err   error
+	)
 	key := getCacheKey(c.ClientIP())
 	_, e := t.Redis.Get(c, key)
 	switch e {
 	case nil:
 		if count, err = t.Redis.INCR(c, key); err != nil {
-			c.AbortWithError(http.StatusInternalServerError, utilerrors.Wrap(err, "[RateLimitMiddleware] increase key failed"))
+			c.AbortWithError(http.StatusInternalServerError, utilerrors.Wrap(err, "[RateLimitMiddleware] INCR from redis failed"))
 			return
 		}
 	case redis.NotFoundError:
 		if count, err = t.Redis.INCRAndExpire(c, key, t.ExpiredDuration); err != nil {
-			c.AbortWithError(http.StatusInternalServerError, utilerrors.Wrap(err, "[RateLimitMiddleware] increase with expire key failed"))
+			c.AbortWithError(http.StatusInternalServerError, utilerrors.Wrap(err, "[RateLimitMiddleware] INCRAndExpire from redis failed"))
 			return
 		}
 	default:
@@ -44,7 +44,7 @@ func (t *Trackers) RateLimitMiddleware(c *gin.Context) {
 	}
 }
 
-func validateRateLimitMiddleware(c *gin.Context) error {
+func validateRateLimitMiddlewareRequest(c *gin.Context) error {
 	if c.ClientIP() == "" {
 		return utilerrors.New("can't provide a blank IP header")
 	}

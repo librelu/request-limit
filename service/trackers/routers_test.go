@@ -100,7 +100,7 @@ var _ = Describe("routes", func() {
 				Expect(recorder.Code).Should(Equal(http.StatusForbidden))
 			})
 		})
-		When("given facing GET cmd redis server error", func() {
+		When("given request GET cmd got redis server error", func() {
 			BeforeEach(func() {
 				mockRedis.EXPECT().Get(gomock.Any(), "ip:127.0.0.1").Return("", errors.New("errors occur"))
 			})
@@ -108,21 +108,21 @@ var _ = Describe("routes", func() {
 				Expect(recorder.Code).Should(Equal(http.StatusInternalServerError))
 			})
 		})
-		When("given facing INCR cmd redis server error", func() {
+		When("given request INCR cmd got redis server error", func() {
 			BeforeEach(func() {
 				mockRedis.EXPECT().Get(gomock.Any(), "ip:127.0.0.1").Return("2", nil)
 				mockRedis.EXPECT().INCR(gomock.Any(), "ip:127.0.0.1").Return(int64(0), errors.New("errors occur"))
 			})
-			It("should returns 403 when request over limit", func() {
+			It("should returns 403", func() {
 				Expect(recorder.Code).Should(Equal(http.StatusInternalServerError))
 			})
 		})
-		When("given facing INCRAndExpire cmd redis server error", func() {
+		When("given request INCRAndExpire cmd got redis server error", func() {
 			BeforeEach(func() {
 				mockRedis.EXPECT().Get(gomock.Any(), "ip:127.0.0.1").Return("2", redis.NotFoundError)
 				mockRedis.EXPECT().INCRAndExpire(gomock.Any(), "ip:127.0.0.1", gomock.Any()).Return(int64(0), errors.New("errors occur"))
 			})
-			It("should returns 403 when request over limit", func() {
+			It("should returns 403", func() {
 				Expect(recorder.Code).Should(Equal(http.StatusInternalServerError))
 			})
 		})

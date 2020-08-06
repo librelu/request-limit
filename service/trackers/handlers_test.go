@@ -87,7 +87,7 @@ var _ = Describe("handlers", func() {
 				Expect(trackerHandler).Should(BeNil())
 			})
 		})
-		When("given negative requestLimit zero", func() {
+		When("given negative request limit", func() {
 			BeforeEach(func() {
 				requestLimit = -100
 			})
@@ -96,7 +96,7 @@ var _ = Describe("handlers", func() {
 				Expect(trackerHandler).Should(BeNil())
 			})
 		})
-		When("given requestLimit zero", func() {
+		When("given request limit zero", func() {
 			BeforeEach(func() {
 				requestLimit = 0
 			})

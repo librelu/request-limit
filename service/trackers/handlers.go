@@ -11,7 +11,7 @@ import (
 )
 
 func NewTrackers(redis redis.Handler, expiredDuration time.Duration, defaultLimit int64) (Handler, error) {
-	if err := validateTrackersInput(redis, expiredDuration, defaultLimit); err != nil {
+	if err := validateNewTrackersInput(redis, expiredDuration, defaultLimit); err != nil {
 		return nil, utilerrors.Wrap(err, "[NewTrackers] can't pass the validation")
 	}
 	return &Trackers{
@@ -21,7 +21,7 @@ func NewTrackers(redis redis.Handler, expiredDuration time.Duration, defaultLimi
 	}, nil
 }
 
-func validateTrackersInput(redis redis.Handler, expiredDuration time.Duration, defaultLimit int64) error {
+func validateNewTrackersInput(redis redis.Handler, expiredDuration time.Duration, defaultLimit int64) error {
 	if redis == nil {
 		return utilerrors.New("redis Handler can't be nil")
 	}
