@@ -7,7 +7,7 @@ This is a micro server to contains the `rate limit` feature. For more details ab
 |/api/v1/track| GET | track user request times by Client IP|
 |/healthcheck| GET | check service health status|
 
-The default ip and prot is `127.0.0.1:8000`.
+The default address is `127.0.0.1:8080`.
 
 # How to setup
 
