@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/gin-gonic/gin"
@@ -27,7 +28,11 @@ func main() {
 		panic(err)
 	}
 	initEndpoints(engine, handlers)
-	engine.Run("0.0.0.0:8080")
+	port := "8080"
+	if os.Getenv("PORT") != "" {
+		port = os.Getenv("PORT")
+	}
+	engine.Run(fmt.Sprintf("0.0.0.0:%s", port))
 }
 
 func initEndpoints(engine *gin.Engine, h *handlers) {

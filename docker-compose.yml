@@ -3,7 +3,7 @@ services:
   main-app:
     build: .
     ports:
-      - "8000:8000"
+      - "8080:8080"
     command: bash -c 'request-limit'
     depends_on:
       - "redis"
@@ -11,6 +11,9 @@ services:
       - "redis"
     volumes:
       - ".:/go/src/github.com/request-limit"
+    environment: 
+      - REDIS_ADDRESS=redis:6379
+      - GIN_MODE=release
   redis:
     image: redis:latest
     ports:
