@@ -27,7 +27,7 @@ func main() {
 		panic(err)
 	}
 	initEndpoints(engine, handlers)
-	engine.Run("0.0.0.0:8000")
+	engine.Run("0.0.0.0:8080")
 }
 
 func initEndpoints(engine *gin.Engine, h *handlers) {
