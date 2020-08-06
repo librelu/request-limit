@@ -1,12 +1,13 @@
 package main
 
 import (
+	"os"
+
 	"github.com/gin-gonic/gin"
 	"github.com/request-limit/clients/redis"
 	"github.com/request-limit/service/healthchecks"
 	"github.com/request-limit/service/trackers"
 	"github.com/request-limit/utils/utilerrors"
-	"github.com/spf13/viper"
 )
 
 type handlers struct {
@@ -40,9 +41,9 @@ func initEndpoints(engine *gin.Engine, h *handlers) {
 
 func initHandlers() (*handlers, error) {
 	redisClient, err := redis.NewClient(
-		viper.GetString("REDIS_USERNAME"),
-		viper.GetString("REDIS_ADDRESS"),
-		viper.GetString("REDIS_PASSWORLD"),
+		os.Getenv("REDIS_USERNAME"),
+		os.Getenv("REDIS_ADDRESS"),
+		os.Getenv("REDIS_PASSWORLD"),
 		0, 0, 3000, 3000, 3000,
 	)
 	if err != nil {
