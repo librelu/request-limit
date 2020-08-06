@@ -1,3 +1,0 @@
-build:
-    run:
-        web: go run main.go

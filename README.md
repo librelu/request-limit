@@ -4,7 +4,7 @@ This is a micro server to contains the `rate-limit` feature. For more details ab
 
 | URL | Method | Description |
 |-----|--------|-------------|
-|/api/v1/track| GET | track user request times by IP|
+|/api/v1/track| GET | track user request times by Client IP|
 |/healthcheck| GET | check service health status|
 
 The default ip and prot is `127.0.0.1:8000`.
@@ -17,3 +17,12 @@ This server using `make` command to control the APP. The make commands contains:
 |-------------|-------------|
 | `make up` | start up server by `docker-compose` file|
 |`make test`| test server|
+
+# Testing in Heroku
+
+The server had deploied to heroku. The hostname is `https://request-limit.herokuapp.com/`
+
+| URL | Method |Description |
+|-------------|------------|-------------|
+| https://request-limit.herokuapp.com/api/v1/track | GET | track user request times by Client IP|
+| https://request-limit.herokuapp.com/api/v1/track | GET | check service health status|
