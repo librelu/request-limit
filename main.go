@@ -43,7 +43,7 @@ func initHandlers() (*handlers, error) {
 	redisClient, err := redis.NewClient(
 		os.Getenv("REDIS_USERNAME"),
 		os.Getenv("REDIS_ADDRESS"),
-		os.Getenv("REDIS_PASSWORLD"),
+		os.Getenv("REDIS_PASSWORD"),
 		0, 0, 3000, 3000, 3000,
 	)
 	if err != nil {
