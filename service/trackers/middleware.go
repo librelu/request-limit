@@ -15,7 +15,7 @@ func (t *Trackers) RateLimitMiddleware(c *gin.Context) {
 		err   error
 	)
 	if err := validateRateLimitMiddleware(c); err != nil {
-		c.AbortWithError(http.StatusForbidden, utilerrors.Wrap(err, "can't pass the validation in RateLimitMiddleware"))
+		c.AbortWithError(http.StatusForbidden, utilerrors.Wrap(err, "[RateLimitMiddleware] can't pass the validation"))
 		return
 	}
 
@@ -24,16 +24,16 @@ func (t *Trackers) RateLimitMiddleware(c *gin.Context) {
 	switch e {
 	case nil:
 		if count, err = t.Redis.INCR(c, key); err != nil {
-			c.AbortWithError(http.StatusInternalServerError, utilerrors.Wrap(err, "increase key failed"))
+			c.AbortWithError(http.StatusInternalServerError, utilerrors.Wrap(err, "[RateLimitMiddleware] increase key failed"))
 			return
 		}
 	case redis.NotFoundError:
 		if count, err = t.Redis.INCRAndExpire(c, key, t.ExpiredDuration); err != nil {
-			c.AbortWithError(http.StatusInternalServerError, utilerrors.Wrap(err, "increase with expire key failed"))
+			c.AbortWithError(http.StatusInternalServerError, utilerrors.Wrap(err, "[RateLimitMiddleware] increase with expire key failed"))
 			return
 		}
 	default:
-		c.AbortWithError(http.StatusInternalServerError, utilerrors.Wrap(e, "get data from redis failed"))
+		c.AbortWithError(http.StatusInternalServerError, utilerrors.Wrap(e, "[RateLimitMiddleware] get data from redis failed"))
 		return
 	}
 	if count > t.DefaultLimit {

@@ -12,7 +12,7 @@ import (
 
 func NewTrackers(redis redis.Handler, expiredDuration time.Duration, defaultLimit int64) (Handler, error) {
 	if err := validateTrackersInput(redis, expiredDuration, defaultLimit); err != nil {
-		return nil, utilerrors.Wrap(err, "can't pass the validation in NewTrackers")
+		return nil, utilerrors.Wrap(err, "[NewTrackers] can't pass the validation")
 	}
 	return &Trackers{
 		Redis:           redis,
@@ -36,13 +36,13 @@ func validateTrackersInput(redis redis.Handler, expiredDuration time.Duration, d
 
 func (t *Trackers) Track(c *gin.Context) {
 	if err := validateTrackRequest(c); err != nil {
-		c.AbortWithError(http.StatusForbidden, utilerrors.Wrap(err, "request can't pass the validation in Track"))
+		c.AbortWithError(http.StatusForbidden, utilerrors.Wrap(err, "[Track] request can't pass the validation"))
 		return
 	}
 	key := getCacheKey(c.ClientIP())
 	data, err := t.Redis.Get(c, key)
 	if err != nil {
-		err := utilerrors.Wrap(err, fmt.Sprintf("data from redis error:%v", key))
+		err := utilerrors.Wrap(err, fmt.Sprintf("[Track] data from redis error:%v", key))
 		c.AbortWithError(http.StatusInternalServerError, err)
 	}
 	c.JSON(http.StatusOK, gin.H{

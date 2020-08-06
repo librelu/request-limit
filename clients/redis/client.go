@@ -11,7 +11,7 @@ import (
 
 func NewClient(username, address, password string, db, maxRetries int, readTimeout, writeTimeout, dialTimeout time.Duration) (Handler, error) {
 	if err := validateInput(address, db, maxRetries, readTimeout, writeTimeout, dialTimeout); err != nil {
-		return nil, utilerrors.Wrap(err, "error when validateInput in NewClient")
+		return nil, utilerrors.Wrap(err, "[NewClient] error when validateInput")
 	}
 	rdb := redis.NewClient(&redis.Options{
 		Addr:         address,
@@ -24,7 +24,7 @@ func NewClient(username, address, password string, db, maxRetries int, readTimeo
 		DialTimeout:  dialTimeout * time.Millisecond,
 	})
 	if err := rdb.Ping(context.Background()).Err(); err != nil {
-		return nil, utilerrors.Wrap(err, "error when healthcheck redis in NewClient")
+		return nil, utilerrors.Wrap(err, "[NewClient] error when healthcheck redis")
 	}
 	return &redisClient{
 		client: rdb,
