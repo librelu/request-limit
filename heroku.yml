@@ -1,0 +1,9 @@
+setup:
+    addons:
+    - plan: heroku-redis
+      as: redis
+build:
+    docker:
+      web: Dockerfile
+  run:
+    web: request-limit 
