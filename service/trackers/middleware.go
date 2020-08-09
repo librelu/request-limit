@@ -11,7 +11,7 @@ import (
 // RateLimitMiddleware Block user when tries so many times in a period
 func (t *Trackers) RateLimitMiddleware(c *gin.Context) {
 	if err := validateRateLimitMiddlewareRequest(c); err != nil {
-		c.AbortWithError(http.StatusForbidden, utilerrors.Wrap(err, "[RateLimitMiddleware] can't pass the validation"))
+		c.AbortWithError(http.StatusBadRequest, utilerrors.Wrap(err, "[RateLimitMiddleware] can't pass the validation"))
 		return
 	}
 

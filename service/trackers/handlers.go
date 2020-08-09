@@ -36,7 +36,7 @@ func validateNewTrackersInput(redis redis.Handler, expiredDuration time.Duration
 
 func (t *Trackers) Track(c *gin.Context) {
 	if err := validateTrackRequest(c); err != nil {
-		c.AbortWithError(http.StatusForbidden, utilerrors.Wrap(err, "[Track] request can't pass the validation"))
+		c.AbortWithError(http.StatusBadRequest, utilerrors.Wrap(err, "[Track] request can't pass the validation"))
 		return
 	}
 	key := getCacheKey(c.ClientIP())

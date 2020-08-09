@@ -96,8 +96,8 @@ var _ = Describe("routes", func() {
 			BeforeEach(func() {
 				mockIP = ""
 			})
-			It("should returns 403", func() {
-				Expect(recorder.Code).Should(Equal(http.StatusForbidden))
+			It("should returns 400", func() {
+				Expect(recorder.Code).Should(Equal(http.StatusBadRequest))
 			})
 		})
 		When("given request GET cmd got redis server error", func() {

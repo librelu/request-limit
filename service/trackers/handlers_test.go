@@ -153,8 +153,8 @@ var _ = Describe("handlers", func() {
 			BeforeEach(func() {
 				mockIP = ""
 			})
-			It("should returns 403", func() {
-				Expect(recorder.Code).Should(Equal(http.StatusForbidden))
+			It("should returns 400", func() {
+				Expect(recorder.Code).Should(Equal(http.StatusBadRequest))
 			})
 		})
 		When("given facing GET cmd redis server error", func() {
