@@ -1,17 +1,19 @@
 # REQIEST-LIMIT
 
-This is a micro server to contains the `rate limit` feature. For more details about `rate limit` can be found in [Redis Doc INCR cmd details](https://redis.io/commands/incr)
+This is a microservice that contains the `rate-limit` feature. For more details about `rate-limit` can be found in [Redis Doc INCR cmd details](https://redis.io/commands/incr)
 
-| URL | Method | Description |
-|-----|--------|-------------|
-|/api/v1/track| GET | track user request times by Client IP|
-|/healthcheck| GET | check service health status|
+This service uses `rate-limit checker` as middleware in external `track` API. I use `rate-limit` as middleware to avoid the same user having many requests in a short period, also using middleware can flexibly reuse in different APIs if external APIs have checking needs.
+
+| URL | Method | Description | Response |
+|-----|--------|-------------|----------|
+|/api/v1/track| GET | track user requests' amount by Client IP. If current IP reach the limit, the API is response `Error`| 200: { "track" : `{{times}}`} <br> 200: `Error` <br> 400: `null` (validation failed)|
+|/healthcheck| GET | response if the server is working| 200: `null`|
 
 The default address is `127.0.0.1:8080`.
 
 # How to setup
 
-This server using `make` command to operate the server. The make commands contains:
+The server using `make` command for operation. The `make` commands contains:
 
 | Command name | Description |
 |-------------|-------------|
@@ -23,25 +25,25 @@ This server using `make` command to operate the server. The make commands contai
 
 # Testing in Heroku
 
-The server had deploied to heroku. The hostname is `https://request-limit.herokuapp.com/`
+The server had deployed to heroku. The hostname is `https://request-limit.herokuapp.com/`
 
-| URL | Method |Description |
-|-------------|------------|-------------|
-| https://request-limit.herokuapp.com/api/v1/track | GET | track user request times by Client IP|
-| https://request-limit.herokuapp.com/healthcheck | GET | check service health status|
+| URL | Method |Description | Response |
+|-------------|------------|-------------|--------|
+| https://request-limit.herokuapp.com/api/v1/track | GET | track user requests' amount by Client IP. If current IP reach the limit, the API is response `Error`| 200: { "track" : `{{times}}`} <br> 200: `Error` <br> 400: `null` (validation failed)|
+| https://request-limit.herokuapp.com/healthcheck | GET | response if the server is working| 200: `null`|
 
 # Vegeta Report
 
 ```
-Requests      [total, rate, throughput]         12000, 100.01, 50.87
-Duration      [total, attack, wait]             2m0s, 2m0s, 324.8ms
-Latencies     [min, mean, 50, 90, 95, 99, max]  255.751ms, 286.243ms, 272.834ms, 290.045ms, 317.939ms, 566.455ms, 3.915s
-Bytes In      [total, mean]                     55068, 4.59
+Requests      [total, rate, throughput]         12000, 100.01, 0.50
+Duration      [total, attack, wait]             2m0s, 2m0s, 269.498ms
+Latencies     [min, mean, 50, 90, 95, 99, max]  254.887ms, 282.939ms, 272.542ms, 289.994ms, 354.898ms, 474.514ms, 2.955s
+Bytes In      [total, mean]                     60531, 5.04
 Bytes Out     [total, mean]                     0, 0.00
-Success       [ratio]                           51.00%
-Status Codes  [code:count]                      200:6120  403:5880  
+Success       [ratio]                           0.50%
+Status Codes  [code:count]                      200:60  403:11940  
 Error Set:
 403 Forbidden
 ```
 
-51% success 49% faied forbidden because of reach the request limit.
+This is a Vegeta report testing in heroku. 50% success 50% failed forbidden because of reach the request limit.
