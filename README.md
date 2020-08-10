@@ -35,13 +35,13 @@ The server had deployed to heroku. The hostname is `https://request-limit.heroku
 # Vegeta Report
 
 ```
-Requests      [total, rate, throughput]         12000, 100.01, 0.50
-Duration      [total, attack, wait]             2m0s, 2m0s, 269.498ms
-Latencies     [min, mean, 50, 90, 95, 99, max]  254.887ms, 282.939ms, 272.542ms, 289.994ms, 354.898ms, 474.514ms, 2.955s
-Bytes In      [total, mean]                     60531, 5.04
+Requests      [total, rate, throughput]         12000, 100.01, 1.00
+Duration      [total, attack, wait]             2m0s, 2m0s, 268.511ms
+Latencies     [min, mean, 50, 90, 95, 99, max]  255.417ms, 288.949ms, 271.118ms, 318.008ms, 381.566ms, 516.436ms, 2.958s
+Bytes In      [total, mean]                     61071, 5.09
 Bytes Out     [total, mean]                     0, 0.00
-Success       [ratio]                           0.50%
-Status Codes  [code:count]                      200:60  403:11940  
+Success       [ratio]                           1.00%
+Status Codes  [code:count]                      200:120  403:11880  
 Error Set:
 403 Forbidden
 ```
